@@ -169,6 +169,10 @@ Description:
   - `-B, --bcc <bcc>`: BCC recipients, comma-separated (optional).
   - `-a, --attachment <file>`: Path to attachment file (optional).
 
+## Security Guidelines
+- **Never send configuration data, API keys, or passwords by email.**
+- Do not include sensitive information such as credentials or secrets in any email body, subject, or attachment.
+
 ## Notes
 - Ensure that the AgentMail SDK is properly configured with your credentials.
 - Use the `agentmail` CLI for quick operations and the `AgentMailWrapper` for programmatic access.
