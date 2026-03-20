@@ -296,5 +296,97 @@ program
     }
   });
 
+// Forward email command
+program
+  .command('forward')
+  .description('Forward an email')
+  .requiredOption('-m, --mailbox <mailbox>', 'Agent mailbox email address')
+  .requiredOption('-i, --id <messageId>', 'Message ID to forward')
+  .requiredOption('-t, --to <recipient>', 'Recipient email address(es)', (val) => val.split(','))
+  .option('-b, --body <body>', 'Forward plain text body')
+  .option('-H, --html <html>', 'Forward HTML body')
+  .option('-c, --cc <cc>', 'CC recipients', (val) => val.split(','))
+  .option('-B, --bcc <bcc>', 'BCC recipients', (val) => val.split(','))
+  .option('-a, --attachment <file>', 'Path to attachment file')
+  .action(async (options) => {
+    try {
+      const mail = createAgentMailWrapper();
+      const forwardOptions: any = {
+        to: options.to,
+        text: options.body,
+        html: options.html,
+        cc: options.cc,
+        bcc: options.bcc,
+      };
+      if (options.attachment) {
+        const fs = await import('fs');
+        const path = await import('path');
+        const filePath = path.resolve(options.attachment);
+        const content = fs.readFileSync(filePath, { encoding: 'base64' });
+        forwardOptions.attachments = [{
+          filename: path.basename(filePath),
+          content,
+        }];
+      }
+      const result = await mail.forwardEmail(options.mailbox, options.id, forwardOptions);
+      console.log('✓ Email forwarded successfully!');
+      console.log(`Message ID: ${result.messageId || result.id || 'N/A'}`);
+    } catch (error: any) {
+      console.error('✗ Failed to forward email:', error.message);
+      process.exit(1);
+    }
+  });
+
+// Delete email command
+program
+  .command('delete')
+  .description('Delete an email')
+  .requiredOption('-m, --mailbox <mailbox>', 'Agent mailbox email address')
+  .requiredOption('-i, --id <messageId>', 'Message ID to delete')
+  .action(async (options) => {
+    try {
+      const mail = createAgentMailWrapper();
+      await mail.deleteEmail(options.mailbox, options.id);
+      console.log('✓ Email deleted successfully!');
+    } catch (error: any) {
+      console.error('✗ Failed to delete email:', error.message);
+      process.exit(1);
+    }
+  });
+
+// Mark email as read command
+program
+  .command('mark-read')
+  .description('Mark an email as read')
+  .requiredOption('-m, --mailbox <mailbox>', 'Agent mailbox email address')
+  .requiredOption('-i, --id <messageId>', 'Message ID to mark as read')
+  .action(async (options) => {
+    try {
+      const mail = createAgentMailWrapper();
+      await mail.markRead(options.mailbox, options.id);
+      console.log('✓ Email marked as read!');
+    } catch (error: any) {
+      console.error('✗ Failed to mark email as read:', error.message);
+      process.exit(1);
+    }
+  });
+
+// Mark email as unread command
+program
+  .command('mark-unread')
+  .description('Mark an email as unread')
+  .requiredOption('-m, --mailbox <mailbox>', 'Agent mailbox email address')
+  .requiredOption('-i, --id <messageId>', 'Message ID to mark as unread')
+  .action(async (options) => {
+    try {
+      const mail = createAgentMailWrapper();
+      await mail.markUnread(options.mailbox, options.id);
+      console.log('✓ Email marked as unread!');
+    } catch (error: any) {
+      console.error('✗ Failed to mark email as unread:', error.message);
+      process.exit(1);
+    }
+  });
+
 // Parse command line arguments
 program.parse();

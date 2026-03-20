@@ -154,6 +154,48 @@ export class AgentMailWrapper {
   }
 
   /**
+   * Delete an email by message ID
+   */
+  async deleteEmail(
+    mailboxId: string,
+    messageId: string
+  ): Promise<void> {
+    try {
+      await this.agentMail.inboxes.messages.delete(mailboxId, messageId);
+    } catch (error: any) {
+      throw new Error(`Failed to delete email: ${error.message}`);
+    }
+  }
+
+  /**
+   * Mark an email as read
+   */
+  async markRead(
+    mailboxId: string,
+    messageId: string
+  ): Promise<void> {
+    try {
+      await this.agentMail.inboxes.messages.markRead(mailboxId, messageId);
+    } catch (error: any) {
+      throw new Error(`Failed to mark email as read: ${error.message}`);
+    }
+  }
+
+  /**
+   * Mark an email as unread
+   */
+  async markUnread(
+    mailboxId: string,
+    messageId: string
+  ): Promise<void> {
+    try {
+      await this.agentMail.inboxes.messages.markUnread(mailboxId, messageId);
+    } catch (error: any) {
+      throw new Error(`Failed to mark email as unread: ${error.message}`);
+    }
+  }
+
+  /**
    * Get list of emails with optional filtering
    */
   async getEmails(

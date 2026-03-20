@@ -120,6 +120,43 @@ describe('AgentMailWrapper', () => {
       });
     });
 
+    it('should forward an email', async () => {
+      const result = await wrapper.forwardEmail(testMailboxId, 'msg123', {
+        to: 'recipient2@example.com',
+        text: 'Forward body',
+      });
+      expect(result).toEqual({ success: true, messageId: 'forward123' });
+      expect(MockAgentMail.inboxes.messages.forward).toHaveBeenCalledWith(testMailboxId, 'msg123', {
+        to: ['recipient2@example.com'],
+        text: 'Forward body',
+        html: undefined,
+        cc: undefined,
+        bcc: undefined,
+        attachments: undefined,
+      });
+    });
+
+    it('should delete an email', async () => {
+      // Add mock implementation for delete
+      MockAgentMail.inboxes.messages.delete = jest.fn().mockResolvedValue({ success: true });
+      await wrapper.deleteEmail(testMailboxId, 'msg123');
+      expect(MockAgentMail.inboxes.messages.delete).toHaveBeenCalledWith(testMailboxId, 'msg123');
+    });
+
+    it('should mark an email as read', async () => {
+      // Add mock implementation for markRead
+      MockAgentMail.inboxes.messages.markRead = jest.fn().mockResolvedValue({ success: true });
+      await wrapper.markRead(testMailboxId, 'msg123');
+      expect(MockAgentMail.inboxes.messages.markRead).toHaveBeenCalledWith(testMailboxId, 'msg123');
+    });
+
+    it('should mark an email as unread', async () => {
+      // Add mock implementation for markUnread
+      MockAgentMail.inboxes.messages.markUnread = jest.fn().mockResolvedValue({ success: true });
+      await wrapper.markUnread(testMailboxId, 'msg123');
+      expect(MockAgentMail.inboxes.messages.markUnread).toHaveBeenCalledWith(testMailboxId, 'msg123');
+    });
+
     it('should reply all to an email', async () => {
       const result = await wrapper.replyAllToEmail(testMailboxId, 'msg123', {
         text: 'Reply all body',

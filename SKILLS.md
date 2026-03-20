@@ -18,6 +18,57 @@ nxp agentmail --help
 ## Using the `agentmail` CLI
 The `agentmail` CLI provides the following commands:
 
+### Forward Email
+Command:
+```bash
+nxp agentmail forward -m <mailbox> -i <messageId> -t <recipient> [options]
+```
+Description:
+- Forwards an email to the specified recipient(s).
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to forward (required).
+  - `-t, --to <recipient>`: Recipient email address(es), comma-separated (required).
+  - `-b, --body <body>`: Forward plain text body (optional).
+  - `-H, --html <html>`: Forward HTML body (optional).
+  - `-c, --cc <cc>`: CC recipients, comma-separated (optional).
+  - `-B, --bcc <bcc>`: BCC recipients, comma-separated (optional).
+  - `-a, --attachment <file>`: Path to attachment file (optional).
+
+### Delete Email
+Command:
+```bash
+nxp agentmail delete -m <mailbox> -i <messageId>
+```
+Description:
+- Deletes an email from the specified mailbox.
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to delete (required).
+
+### Mark Email as Read
+Command:
+```bash
+nxp agentmail mark-read -m <mailbox> -i <messageId>
+```
+Description:
+- Marks an email as read in the specified mailbox.
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to mark as read (required).
+
+### Mark Email as Unread
+Command:
+```bash
+nxp agentmail mark-unread -m <mailbox> -i <messageId>
+```
+Description:
+- Marks an email as unread in the specified mailbox.
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to mark as unread (required).
+
+
 ### 5. Reply to Email
 Command:
 ```bash
