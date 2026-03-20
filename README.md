@@ -3,8 +3,7 @@
 AgentMailWrapper is a Node.js package and CLI tool that provides a simple interface for sending, receiving, drafting, and searching emails using the AgentMail API. It wraps the AgentMail SDK and exposes convenient commands for common email operations.
 
 ## Features
-- Send, receive, and manage emails from the command line
-- Draft and search emails
+- Send, receive, Draft, Delete, and Search and manage emails from the command line using npx CLI commands
 - Integrates with the AgentMail API and SDK
 
 ## Prerequisites
@@ -26,11 +25,48 @@ npx agentmail --help
 npx agentmail --version
 ```
 
-Or import the wrapper in your Node.js project:
+## AgentMailWrapper
+The `AgentMailWrapper` is a JavaScript module that wraps the AgentMail SDK, providing utility functions for email operations.
 
-```js
-const AgentMailWrapper = require('agentmail-wrapper');
-// Use AgentMailWrapper in your code
+### Key Functions
+1. `getEmails(mailbox, options)`
+   - Fetches a list of emails from the specified mailbox.
+   - Options include `limit`, `folder`, and `unreadOnly`.
+
+2. `getEmail(mailbox, emailId)`
+   - Fetches the details of a specific email by its ID.
+
+3. `sendEmail(mailbox, emailOptions)`
+   - Sends an email using the specified mailbox and options.
+
+### Example Usage
+```javascript
+const AgentMailWrapper = require('./dist/AgentMailWrapper');
+
+// Initialize the wrapper
+const agentMail = new AgentMailWrapper();
+
+// List emails
+agentMail.getEmails('example@mail.com', { limit: 10, folder: 'inbox' })
+  .then(emails => {
+    console.log('Emails:', emails);
+  });
+
+// Send an email
+agentMail.sendEmail('example@mail.com', {
+  to: ['recipient@mail.com'],
+  subject: 'Hello',
+  text: 'This is a test email.',
+})
+  .then(response => {
+    console.log('Email sent:', response);
+  });
+
+// Get a specific email
+agentMail.getEmail('example@mail.com', 'message-id-123')
+  .then(email => {
+    console.log('Email details:', email);
+  });
 ```
 
 ## Configuration

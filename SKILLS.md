@@ -3,6 +3,22 @@
 ## Overview
 This document provides guidance on how to use the `AgentMailWrapper` and interact with the `agentmail` CLI interface. The `agentmail` CLI is designed to simplify email operations such as listing, sending, and managing emails.
 
+## Installation
+
+This wrapper only needs to be installed once per environment. Any agent can use it via NPX CLI commands.
+
+**Before installing, test if the wrapper is already available:**
+
+```bash
+npx agentmail --help || npx agentmail --version
+```
+
+If either command succeeds, the wrapper is already installed and ready to use. If both fail, install as follows:
+
+```bash
+npm install -g agentmail-wrapper
+```
+
 ## Prerequisites
 - Node.js installed on your system.
 - The `agentmail` CLI tool set up in your environment.
@@ -17,90 +33,6 @@ nxp agentmail --help
 
 ## Using the `agentmail` CLI
 The `agentmail` CLI provides the following commands:
-
-### Forward Email
-Command:
-```bash
-nxp agentmail forward -m <mailbox> -i <messageId> -t <recipient> [options]
-```
-Description:
-- Forwards an email to the specified recipient(s).
-- Options:
-  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
-  - `-i, --id <messageId>`: Message ID to forward (required).
-  - `-t, --to <recipient>`: Recipient email address(es), comma-separated (required).
-  - `-b, --body <body>`: Forward plain text body (optional).
-  - `-H, --html <html>`: Forward HTML body (optional).
-  - `-c, --cc <cc>`: CC recipients, comma-separated (optional).
-  - `-B, --bcc <bcc>`: BCC recipients, comma-separated (optional).
-  - `-a, --attachment <file>`: Path to attachment file (optional).
-
-### Delete Email
-Command:
-```bash
-nxp agentmail delete -m <mailbox> -i <messageId>
-```
-Description:
-- Deletes an email from the specified mailbox.
-- Options:
-  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
-  - `-i, --id <messageId>`: Message ID to delete (required).
-
-### Mark Email as Read
-Command:
-```bash
-nxp agentmail mark-read -m <mailbox> -i <messageId>
-```
-Description:
-- Marks an email as read in the specified mailbox.
-- Options:
-  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
-  - `-i, --id <messageId>`: Message ID to mark as read (required).
-
-### Mark Email as Unread
-Command:
-```bash
-nxp agentmail mark-unread -m <mailbox> -i <messageId>
-```
-Description:
-- Marks an email as unread in the specified mailbox.
-- Options:
-  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
-  - `-i, --id <messageId>`: Message ID to mark as unread (required).
-
-
-### 5. Reply to Email
-Command:
-```bash
-nxp agentmail reply -m <mailbox> -i <messageId> [options]
-```
-Description:
-- Replies to a specific email in the mailbox.
-- Options:
-  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
-  - `-i, --id <messageId>`: Message ID to reply to (required).
-  - `-b, --body <body>`: Reply plain text body (optional).
-  - `-H, --html <html>`: Reply HTML body (optional).
-  - `-c, --cc <cc>`: CC recipients, comma-separated (optional).
-  - `-B, --bcc <bcc>`: BCC recipients, comma-separated (optional).
-  - `-a, --attachment <file>`: Path to attachment file (optional).
-
-### 6. Reply-All to Email
-Command:
-```bash
-nxp agentmail reply-all -m <mailbox> -i <messageId> [options]
-```
-Description:
-- Replies to all recipients of a specific email in the mailbox.
-- Options:
-  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
-  - `-i, --id <messageId>`: Message ID to reply-all to (required).
-  - `-b, --body <body>`: Reply plain text body (optional).
-  - `-H, --html <html>`: Reply HTML body (optional).
-  - `-c, --cc <cc>`: CC recipients, comma-separated (optional).
-  - `-B, --bcc <bcc>`: BCC recipients, comma-separated (optional).
-  - `-a, --attachment <file>`: Path to attachment file (optional).
-
 
 ### 1. Send Email
 Command:
@@ -155,49 +87,87 @@ Description:
   - `-q, --query <query>`: Search query (required).
   - `-l, --limit <number>`: Maximum number of results (default: 10).
 
-## AgentMailWrapper
-The `AgentMailWrapper` is a JavaScript module that wraps the AgentMail SDK, providing utility functions for email operations.
-
-### Key Functions
-1. `getEmails(mailbox, options)`
-   - Fetches a list of emails from the specified mailbox.
-   - Options include `limit`, `folder`, and `unreadOnly`.
-
-2. `getEmail(mailbox, emailId)`
-   - Fetches the details of a specific email by its ID.
-
-3. `sendEmail(mailbox, emailOptions)`
-   - Sends an email using the specified mailbox and options.
-
-### Example Usage
-```javascript
-const AgentMailWrapper = require('./dist/AgentMailWrapper');
-
-// Initialize the wrapper
-const agentMail = new AgentMailWrapper();
-
-// List emails
-agentMail.getEmails('example@mail.com', { limit: 10, folder: 'inbox' })
-  .then(emails => {
-    console.log('Emails:', emails);
-  });
-
-// Send an email
-agentMail.sendEmail('example@mail.com', {
-  to: ['recipient@mail.com'],
-  subject: 'Hello',
-  text: 'This is a test email.',
-})
-  .then(response => {
-    console.log('Email sent:', response);
-  });
-
-// Get a specific email
-agentMail.getEmail('example@mail.com', 'message-id-123')
-  .then(email => {
-    console.log('Email details:', email);
-  });
+### 5. Forward Email
+Command:
+```bash
+nxp agentmail forward -m <mailbox> -i <messageId> -t <recipient> [options]
 ```
+Description:
+- Forwards an email to the specified recipient(s).
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to forward (required).
+  - `-t, --to <recipient>`: Recipient email address(es), comma-separated (required).
+  - `-b, --body <body>`: Forward plain text body (optional).
+  - `-H, --html <html>`: Forward HTML body (optional).
+  - `-c, --cc <cc>`: CC recipients, comma-separated (optional).
+  - `-B, --bcc <bcc>`: BCC recipients, comma-separated (optional).
+  - `-a, --attachment <file>`: Path to attachment file (optional).
+
+### 6. Delete Email
+Command:
+```bash
+nxp agentmail delete -m <mailbox> -i <messageId>
+```
+Description:
+- Deletes an email from the specified mailbox.
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to delete (required).
+
+### 7. Mark Email as Read
+Command:
+```bash
+nxp agentmail mark-read -m <mailbox> -i <messageId>
+```
+Description:
+- Marks an email as read in the specified mailbox.
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to mark as read (required).
+
+### 8. Mark Email as Unread
+Command:
+```bash
+nxp agentmail mark-unread -m <mailbox> -i <messageId>
+```
+Description:
+- Marks an email as unread in the specified mailbox.
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to mark as unread (required).
+
+### 9. Reply to Email
+Command:
+```bash
+nxp agentmail reply -m <mailbox> -i <messageId> [options]
+```
+Description:
+- Replies to a specific email in the mailbox.
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to reply to (required).
+  - `-b, --body <body>`: Reply plain text body (optional).
+  - `-H, --html <html>`: Reply HTML body (optional).
+  - `-c, --cc <cc>`: CC recipients, comma-separated (optional).
+  - `-B, --bcc <bcc>`: BCC recipients, comma-separated (optional).
+  - `-a, --attachment <file>`: Path to attachment file (optional).
+
+### 10. Reply-All to Email
+Command:
+```bash
+nxp agentmail reply-all -m <mailbox> -i <messageId> [options]
+```
+Description:
+- Replies to all recipients of a specific email in the mailbox.
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to reply-all to (required).
+  - `-b, --body <body>`: Reply plain text body (optional).
+  - `-H, --html <html>`: Reply HTML body (optional).
+  - `-c, --cc <cc>`: CC recipients, comma-separated (optional).
+  - `-B, --bcc <bcc>`: BCC recipients, comma-separated (optional).
+  - `-a, --attachment <file>`: Path to attachment file (optional).
 
 ## Notes
 - Ensure that the AgentMail SDK is properly configured with your credentials.
