@@ -14,7 +14,7 @@ AgentMailWrapper is a Node.js package and CLI tool that provides a simple interf
 Clone the repository and install dependencies:
 
 ```bash
-npm install
+sudo npm install -g
 ```
 
 ## Usage
