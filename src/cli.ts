@@ -340,16 +340,16 @@ program
 // Delete email command
 program
   .command('delete')
-  .description('Delete an email')
+  .description('Delete an email (deletes the entire thread containing the message)')
   .requiredOption('-m, --mailbox <mailbox>', 'Agent mailbox email address')
-  .requiredOption('-i, --id <messageId>', 'Message ID to delete')
+  .requiredOption('-i, --id <messageId>', 'Message ID to delete (deletes the thread)')
   .action(async (options) => {
     try {
       const mail = createAgentMailWrapper();
       await mail.deleteEmail(options.mailbox, options.id);
-      console.log('✓ Email deleted successfully!');
+      console.log('✓ Thread containing the email deleted successfully!');
     } catch (error: any) {
-      console.error('✗ Failed to delete email:', error.message);
+      console.error('✗ Failed to delete email/thread:', error.message);
       process.exit(1);
     }
   });

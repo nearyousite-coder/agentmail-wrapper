@@ -154,16 +154,53 @@ export class AgentMailWrapper {
   }
 
   /**
-   * Delete an email by message ID
+   * Delete the thread containing a given message ID
    */
   async deleteEmail(
     mailboxId: string,
     messageId: string
   ): Promise<void> {
     try {
-      await this.agentMail.inboxes.messages.delete(mailboxId, messageId);
+      // Find the thread containing the message
+      const threads = await this.getThreads(mailboxId);
+      let foundThread = null;
+      for (const thread of threads) {
+        if (thread.messages && thread.messages.some((msg: any) => msg.id === messageId)) {
+          foundThread = thread;
+          break;
+        }
+        // If thread.messages is not populated, fetch thread details
+        if (!thread.messages) {
+          const fullThread = await this.getThread(mailboxId, thread.id);
+          if (fullThread.messages && fullThread.messages.some((msg: any) => msg.id === messageId)) {
+            foundThread = fullThread;
+            break;
+          }
+        }
+      }
+      if (!foundThread) {
+        throw new Error(`No thread found containing message ID: ${messageId}`);
+      }
+      await this.deleteThread(mailboxId, foundThread.id);
     } catch (error: any) {
-      throw new Error(`Failed to delete email: ${error.message}`);
+      throw new Error(`Failed to delete email (thread): ${error.message}`);
+    }
+  }
+
+  /**
+   * Delete a thread by thread ID
+   */
+  async deleteThread(
+    mailboxId: string,
+    threadId: string
+  ): Promise<void> {
+    try {
+      if (!this.agentMail.inboxes.threads.delete) {
+        throw new Error('Thread deletion is not supported by the AgentMail SDK.');
+      }
+      await this.agentMail.inboxes.threads.delete(mailboxId, threadId);
+    } catch (error: any) {
+      throw new Error(`Failed to delete thread: ${error.message}`);
     }
   }
 

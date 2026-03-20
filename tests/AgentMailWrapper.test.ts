@@ -136,11 +136,12 @@ describe('AgentMailWrapper', () => {
       });
     });
 
-    it('should delete an email', async () => {
-      // Add mock implementation for delete
-      MockAgentMail.inboxes.messages.delete = jest.fn().mockResolvedValue({ success: true });
+    it('should delete an email (thread-based)', async () => {
+      // Mock thread and thread deletion
+      MockAgentMail.inboxes.threads.list = jest.fn().mockResolvedValue({ threads: [{ id: 'thread1', messages: [{ id: 'msg123' }] }] });
+      MockAgentMail.inboxes.threads.delete = jest.fn().mockResolvedValue({ success: true });
       await wrapper.deleteEmail(testMailboxId, 'msg123');
-      expect(MockAgentMail.inboxes.messages.delete).toHaveBeenCalledWith(testMailboxId, 'msg123');
+      expect(MockAgentMail.inboxes.threads.delete).toHaveBeenCalledWith(testMailboxId, 'thread1');
     });
 
     it('should mark an email as read', async () => {
