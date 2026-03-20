@@ -10,6 +10,6 @@ This document provides guidance on how to use the `AgentMailWrapper` and interac
 ## Instalation
 ```bash
 npm install
-nxp agentmail --version
-nxp agentmail --help
+npx agentmail --version
+npx agentmail --help
 ```
