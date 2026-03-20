@@ -171,8 +171,8 @@ export class AgentMailWrapper {
         }
         // If thread.messages is not populated, fetch thread details
         if (!thread.messages) {
-          const fullThread = await this.getThread(mailboxId, thread.id);
-          if (fullThread.messages && fullThread.messages.some((msg: any) => msg.id === messageId)) {
+          const fullThread = await this.getThread(mailboxId, thread.threadId);
+          if (fullThread.messages && fullThread.messages.some((msg: any) => msg.messageId.includes(messageId))) {
             foundThread = fullThread;
             break;
           }
@@ -181,7 +181,7 @@ export class AgentMailWrapper {
       if (!foundThread) {
         throw new Error(`No thread found containing message ID: ${messageId}`);
       }
-      await this.deleteThread(mailboxId, foundThread.id);
+      await this.deleteThread(mailboxId, foundThread.threadId);
     } catch (error: any) {
       throw new Error(`Failed to delete email (thread): ${error.message}`);
     }
