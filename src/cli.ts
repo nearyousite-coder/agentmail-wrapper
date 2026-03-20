@@ -170,6 +170,84 @@ program
     }
   });
 
+// Reply to email command
+program
+  .command('reply')
+  .description('Reply to an email')
+  .requiredOption('-m, --mailbox <mailbox>', 'Agent mailbox email address')
+  .requiredOption('-i, --id <messageId>', 'Message ID to reply to')
+  .option('-b, --body <body>', 'Reply plain text body')
+  .option('-H, --html <html>', 'Reply HTML body')
+  .option('-c, --cc <cc>', 'CC recipients', (val) => val.split(','))
+  .option('-B, --bcc <bcc>', 'BCC recipients', (val) => val.split(','))
+  .option('-a, --attachment <file>', 'Path to attachment file')
+  .action(async (options) => {
+    try {
+      const mail = createAgentMailWrapper();
+      const replyOptions :any = {
+        text: options.body,
+        html: options.html,
+        cc: options.cc,
+        bcc: options.bcc,
+      };
+      if (options.attachment) {
+        const fs = await import('fs');
+        const path = await import('path');
+        const filePath = path.resolve(options.attachment);
+        const content = fs.readFileSync(filePath, { encoding: 'base64' });
+        replyOptions.attachments = [{
+          filename: path.basename(filePath),
+          content,
+        }];
+      }
+      const result = await mail.replyToEmail(options.mailbox, options.id, replyOptions);
+      console.log('✓ Reply sent successfully!');
+      console.log(`Message ID: ${result.messageId || result.id || 'N/A'}`);
+    } catch (error: any) {
+      console.error('✗ Failed to reply to email:', error.message);
+      process.exit(1);
+    }
+  });
+
+// Reply-all to email command
+program
+  .command('reply-all')
+  .description('Reply-all to an email')
+  .requiredOption('-m, --mailbox <mailbox>', 'Agent mailbox email address')
+  .requiredOption('-i, --id <messageId>', 'Message ID to reply-all to')
+  .option('-b, --body <body>', 'Reply plain text body')
+  .option('-H, --html <html>', 'Reply HTML body')
+  .option('-c, --cc <cc>', 'CC recipients', (val) => val.split(','))
+  .option('-B, --bcc <bcc>', 'BCC recipients', (val) => val.split(','))
+  .option('-a, --attachment <file>', 'Path to attachment file')
+  .action(async (options) => {
+    try {
+      const mail = createAgentMailWrapper();
+      const replyOptions :any = {
+        text: options.body,
+        html: options.html,
+        cc: options.cc,
+        bcc: options.bcc,
+      };
+      if (options.attachment) {
+        const fs = await import('fs');
+        const path = await import('path');
+        const filePath = path.resolve(options.attachment);
+        const content = fs.readFileSync(filePath, { encoding: 'base64' });
+        replyOptions.attachments = [{
+          filename: path.basename(filePath),
+          content,
+        }];
+      }
+      const result = await mail.replyAllToEmail(options.mailbox, options.id, replyOptions);
+      console.log('✓ Reply-all sent successfully!');
+      console.log(`Message ID: ${result.messageId || result.id || 'N/A'}`);
+    } catch (error: any) {
+      console.error('✗ Failed to reply-all to email:', error.message);
+      process.exit(1);
+    }
+  });
+
 // Draft commands
 program
   .command('draft')

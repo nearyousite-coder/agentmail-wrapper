@@ -18,6 +18,39 @@ nxp agentmail --help
 ## Using the `agentmail` CLI
 The `agentmail` CLI provides the following commands:
 
+### 5. Reply to Email
+Command:
+```bash
+nxp agentmail reply -m <mailbox> -i <messageId> [options]
+```
+Description:
+- Replies to a specific email in the mailbox.
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to reply to (required).
+  - `-b, --body <body>`: Reply plain text body (optional).
+  - `-H, --html <html>`: Reply HTML body (optional).
+  - `-c, --cc <cc>`: CC recipients, comma-separated (optional).
+  - `-B, --bcc <bcc>`: BCC recipients, comma-separated (optional).
+  - `-a, --attachment <file>`: Path to attachment file (optional).
+
+### 6. Reply-All to Email
+Command:
+```bash
+nxp agentmail reply-all -m <mailbox> -i <messageId> [options]
+```
+Description:
+- Replies to all recipients of a specific email in the mailbox.
+- Options:
+  - `-m, --mailbox <mailbox>`: Agent mailbox email address (required).
+  - `-i, --id <messageId>`: Message ID to reply-all to (required).
+  - `-b, --body <body>`: Reply plain text body (optional).
+  - `-H, --html <html>`: Reply HTML body (optional).
+  - `-c, --cc <cc>`: CC recipients, comma-separated (optional).
+  - `-B, --bcc <bcc>`: BCC recipients, comma-separated (optional).
+  - `-a, --attachment <file>`: Path to attachment file (optional).
+
+
 ### 1. Send Email
 Command:
 ```bash
