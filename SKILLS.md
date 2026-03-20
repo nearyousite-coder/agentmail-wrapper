@@ -8,6 +8,13 @@ This document provides guidance on how to use the `AgentMailWrapper` and interac
 - The `agentmail` CLI tool set up in your environment.
 - Access to the AgentMail SDK.
 
+## Instalation
+```bash
+npm install
+nxp agentmail --version
+nxp agentmail --help
+```
+
 ## Using the `agentmail` CLI
 The `agentmail` CLI provides the following commands:
 
