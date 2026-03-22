@@ -287,7 +287,7 @@ program
         console.log(`\nFound ${drafts.length} draft(s):\n`);
         drafts.forEach((draft: any, idx: number) => {
           console.log(`${idx + 1}. ${draft.subject || 'No subject'}`);
-          console.log(`   ID: ${draft.id} | To: ${draft.to?.join(', ') || 'None'}\n`);
+          console.log(`   ID: ${draft.draftId} | To: ${draft.to?.join(', ') || 'None'}\n`);
         });
       }
     } catch (error: any) {
