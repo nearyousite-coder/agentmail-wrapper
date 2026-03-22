@@ -296,6 +296,24 @@ program
     }
   });
 
+// Send draft command
+program
+  .command('draft-send')
+  .description('Send a draft email by draft ID')
+  .requiredOption('-m, --mailbox <mailbox>', 'Agent mailbox email address')
+  .requiredOption('-i, --id <draftId>', 'Draft ID to send')
+  .action(async (options) => {
+    try {
+      const mail = createAgentMailWrapper();
+      const sentMessage = await mail.sendDraft(options.mailbox, options.id);
+      console.log('✓ Draft sent successfully!');
+      console.log(`Sent Message ID: ${sentMessage.messageId || sentMessage.id || 'N/A'}`);
+    } catch (error: any) {
+      console.error('✗ Failed to send draft:', error.message);
+      process.exit(1);
+    }
+  });
+
 // Forward email command
 program
   .command('forward')
